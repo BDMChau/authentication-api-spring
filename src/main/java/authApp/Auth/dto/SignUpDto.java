@@ -64,4 +64,12 @@ public class SignUpDto {
     }
 
 
+    @Override
+    public String toString() {
+        return "SignUpDto{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

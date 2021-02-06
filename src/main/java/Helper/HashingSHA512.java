@@ -12,15 +12,17 @@ public class HashingSHA512 {
     public HashingSHA512() {
     }
 
-    public String hash(String originalString) throws NoSuchAlgorithmException {
+    public String hash(Object originalString) throws NoSuchAlgorithmException {
         final byte[] salt = new byte[12];
         SecureRandom.getInstanceStrong().nextBytes(salt);
 
-        final HashCode stringHashed = Hashing.sha512().hashBytes(originalString.getBytes(StandardCharsets.UTF_8));
+        final HashCode stringHashed =
+                Hashing.sha512().hashBytes(originalString.toString().getBytes(StandardCharsets.UTF_8));
         final HashCode saltHashed = HashCode.fromBytes(salt);
 
         return stringHashed.toString() + saltHashed.toString();
     }
+
 
 
     public Boolean compare(String originalString, String stringHashed) {

@@ -22,7 +22,7 @@ public class User {
     private String password;
 
 
-    public User(){
+    public User() {
 
     }
 
@@ -63,7 +63,6 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
 
 
     @Override
