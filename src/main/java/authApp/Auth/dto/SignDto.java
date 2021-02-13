@@ -4,7 +4,7 @@ import java.util.regex.*;
 
 import Enums.isValidEnum;
 
-public class SignUpDto {
+public class SignDto {
     String name;
     String email;
     String password;
