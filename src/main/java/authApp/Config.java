@@ -23,6 +23,6 @@ public class Config {
 
     @Bean
     public void welcome() throws NoSuchAlgorithmException {
-
+        System.out.println("Hello");
     }
 }

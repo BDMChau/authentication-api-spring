@@ -23,10 +23,12 @@ public class AuthService {
 
     private final AuthRepository authRepository;
 
+
     @Autowired
     public AuthService(AuthRepository authRepository) {
         this.authRepository = authRepository;
     }
+
 
 
     public ResponseEntity signUp(SignDto signDto) throws NoSuchAlgorithmException {
