@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -68,12 +70,15 @@ public class AuthService {
         }
 
 
+        Long id = user.getId();
         String name = user.getName();
         String email = user.getEmail();
+        Map<String, Serializable> userData = Map.of("id", id, "name", name,"email", email);
 
         String token = Jwts.builder()
-                .claim("user", user)
+                .claim("user", userData)
                 .signWith(SignatureAlgorithm.HS256, System.getenv("JWT_KEY").getBytes(StandardCharsets.UTF_8))
+                //.setExpiration(new Date(System.currentTimeMillis() + 600000))
                 .compressWith(CompressionCodecs.DEFLATE)
                 .compact();
 
@@ -81,7 +86,7 @@ public class AuthService {
         Map<String, Object> msg = Map.of(
                 "msg", "Sign in success",
                 "token", token,
-                "user", Map.of("name", name,"email", email)
+                "user", userData
                 );
         return new ResponseEntity<>(new Response(200, HttpStatus.OK, msg).jsonObject(), HttpStatus.OK);
     }
