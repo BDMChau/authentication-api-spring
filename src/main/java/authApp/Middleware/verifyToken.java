@@ -26,21 +26,24 @@ public class verifyToken implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
 
         try {
-            String token = req.getHeader("Authorization");
-            if (token.equals("")) {
-                throw new JwtException("miss");
-            }
+            if (req.getHeader("Authorization") == null || req.getHeader("Authorization").equals("")) {
+                res.setStatus(403);
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
 
+                Map<String, String> error = Map.of("err", "Missing Token!");
+                ResJsonMiddleware(res, res.getContentType(), res.getCharacterEncoding(), res.getStatus(),
+                        HttpStatus.FORBIDDEN, error);
+                return;
+            }
+            String   token = req.getHeader("Authorization");
 
             Jws<Claims> tokenParsed = Jwts.parser()
                     .setSigningKey(System.getenv("JWT_KEY").getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token);
 
             Claims tokenBody = tokenParsed.getBody();
-
             req.setAttribute("user", tokenBody);
-            System.out.println(req.getAttribute("user"));
-
 
             chain.doFilter(request, response);
         } catch (IOException | ServletException | JwtException e) {
